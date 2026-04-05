@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 215 28% 7%;
+    --foreground: 210 20% 90%;
+
+    --card: 215 25% 10%;
+    --card-foreground: 210 20% 90%;
+
+    --popover: 215 25% 10%;
+    --popover-foreground: 210 20% 90%;
+
+    --primary: 155 100% 50%;
+    --primary-foreground: 215 28% 7%;
+
+    --secondary: 215 20% 14%;
+    --secondary-foreground: 210 20% 90%;
+
+    --muted: 215 18% 16%;
+    --muted-foreground: 215 12% 55%;
+
+    --accent: 215 20% 18%;
+    --accent-foreground: 210 20% 90%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 215 15% 20%;
+    --input: 215 15% 20%;
+    --ring: 155 100% 50%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 215 28% 7%;
+    --sidebar-foreground: 210 20% 90%;
+    --sidebar-primary: 155 100% 50%;
+    --sidebar-primary-foreground: 215 28% 7%;
+    --sidebar-accent: 215 20% 14%;
+    --sidebar-accent-foreground: 210 20% 90%;
+    --sidebar-border: 215 15% 20%;
+    --sidebar-ring: 155 100% 50%;
+
+    --forge-green: 155 100% 50%;
+    --forge-blue: 211 90% 62%;
+    --forge-surface: 215 25% 10%;
+    --forge-surface-hover: 215 22% 14%;
+    --forge-border: 215 15% 22%;
+    --forge-text-primary: 0 0% 100%;
+    --forge-text-secondary: 215 12% 60%;
+    --forge-text-muted: 215 10% 40%;
+    --forge-glow: 155 100% 50%;
+
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  .dark {
+    --background: 215 28% 7%;
+    --foreground: 210 20% 90%;
+    --card: 215 25% 10%;
+    --card-foreground: 210 20% 90%;
+    --popover: 215 25% 10%;
+    --popover-foreground: 210 20% 90%;
+    --primary: 155 100% 50%;
+    --primary-foreground: 215 28% 7%;
+    --secondary: 215 20% 14%;
+    --secondary-foreground: 210 20% 90%;
+    --muted: 215 18% 16%;
+    --muted-foreground: 215 12% 55%;
+    --accent: 215 20% 18%;
+    --accent-foreground: 210 20% 90%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 215 15% 20%;
+    --input: 215 15% 20%;
+    --ring: 155 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer utilities {
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  .font-sans {
+    font-family: var(--font-sans);
+  }
+
+  .glass-card {
+    @apply bg-card/60 backdrop-blur-xl border border-border rounded-lg;
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300 hover:border-primary/30 hover:shadow-[0_0_30px_-5px_hsl(var(--forge-glow)/0.15)];
+  }
+
+  .glow-border {
+    @apply border border-primary/50 shadow-[0_0_20px_-5px_hsl(var(--forge-glow)/0.3)];
+  }
+
+  .dot-grid {
+    background-image: radial-gradient(circle, hsl(var(--forge-border)) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(155,100%,50%)] to-[hsl(211,90%,62%)];
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
