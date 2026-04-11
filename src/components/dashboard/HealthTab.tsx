@@ -20,7 +20,13 @@ const recommendations = [
   { text: "Include a license badge", pts: "+5 pts" },
 ];
 
-export function HealthTab() {
+interface HealthTabProps {
+  userId: string;
+  userName: string;
+  userEmail: string;
+}
+
+export function HealthTab({ userId }: HealthTabProps) {
   const overallScore = 72;
 
   return (

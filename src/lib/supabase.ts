@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY
 
 if (!supabaseUrl || !supabaseKey) {
   throw new Error('Missing Supabase environment variables')
@@ -93,9 +93,122 @@ export async function signInWithGitHub() {
   return { data, error }
 }
 
+export async function requestSignupOtp(email: string) {
+  // Sends OTP email. Requires SMTP + email OTP enabled in Supabase Auth.
+  const { data, error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      shouldCreateUser: true,
+    },
+  })
+
+  return { data, error }
+}
+
+export async function verifySignupOtpAndCreateProfile(
+  email: string,
+  token: string,
+  password: string,
+  name: string,
+) {
+  const { data: otpData, error: otpError } = await supabase.auth.verifyOtp({
+    email,
+    token,
+    type: 'email',
+  })
+
+  if (otpError) {
+    return { error: otpError }
+  }
+
+  const user = otpData.user
+  if (!user) {
+    return { error: new Error('OTP verified but user session is missing') }
+  }
+
+  const { error: updateUserError } = await supabase.auth.updateUser({
+    password,
+    data: {
+      display_name: name,
+    },
+  })
+
+  if (updateUserError) {
+    return { error: updateUserError }
+  }
+
+  const { error: profileError } = await supabase
+    .from('users')
+    .upsert(
+      {
+        auth_id: user.id,
+        email,
+        name,
+        avatar_url: user.user_metadata?.avatar_url || null,
+        github_username: null,
+        github_id: null,
+        plan: 'free',
+        subscription_status: 'active',
+        last_login: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'auth_id' },
+    )
+
+  if (profileError) {
+    return { error: profileError }
+  }
+
+  return { data: { user: otpData.user, session: otpData.session } }
+}
+
+export async function signIn(email: string, password: string) {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  })
+
+  return { data, error }
+}
+
 export async function signOut() {
   const { error } = await supabase.auth.signOut()
   return { error }
+}
+
+export async function createGitHubUserProfile(user: any) {
+  // Extract GitHub user data from auth user metadata
+  const githubUsername = user.user_metadata?.user_name || user.user_metadata?.full_name?.split(' ')[0] || user.email?.split('@')[0]
+  const githubId = user.user_metadata?.provider_id || 0
+  const avatarUrl = user.user_metadata?.avatar_url || ''
+  const fullName = user.user_metadata?.full_name || user.user_metadata?.name || githubUsername || 'GitHub User'
+
+  // Create or update user profile
+  const { data, error } = await supabase
+    .from('users')
+    .upsert(
+      {
+        auth_id: user.id,
+        email: user.email,
+        name: fullName,
+        avatar_url: avatarUrl,
+        github_username: githubUsername,
+        github_id: githubId,
+        plan: 'free',
+        subscription_status: 'active',
+        last_login: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'auth_id' },
+    )
+    .select()
+    .single()
+
+  if (error) {
+    return { error }
+  }
+
+  return { data }
 }
 
 export async function getCurrentUser() {

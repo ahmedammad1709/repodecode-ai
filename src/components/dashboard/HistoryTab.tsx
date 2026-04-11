@@ -7,7 +7,13 @@ const versions = [
   { date: "Jan 8, 2025", time: "4:50 PM", version: "v1", template: "Minimal", health: 45 },
 ];
 
-export function HistoryTab() {
+interface HistoryTabProps {
+  userId: string;
+  userName: string;
+  userEmail: string;
+}
+
+export function HistoryTab({ userId }: HistoryTabProps) {
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-bold">Version History</h2>

@@ -3,7 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Github } from "lucide-react";
 
-export function ConnectionTab() {
+interface ConnectionTabProps {
+  userId: string;
+  userName: string;
+  userEmail: string;
+}
+
+export function ConnectionTab({ userId }: ConnectionTabProps) {
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-bold">GitHub Connection</h2>

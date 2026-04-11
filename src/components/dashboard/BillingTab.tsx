@@ -3,7 +3,13 @@ import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
-export function BillingTab() {
+interface BillingTabProps {
+  userId: string;
+  userName: string;
+  userEmail: string;
+}
+
+export function BillingTab({ userId }: BillingTabProps) {
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-bold">Billing</h2>

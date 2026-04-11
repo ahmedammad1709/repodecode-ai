@@ -3,7 +3,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 
-export function SettingsTab() {
+interface SettingsTabProps {
+  userId: string;
+  userName: string;
+  userEmail: string;
+}
+
+export function SettingsTab({ userId }: SettingsTabProps) {
   return (
     <div className="space-y-6 max-w-2xl">
       <h2 className="text-xl font-bold">Settings</h2>

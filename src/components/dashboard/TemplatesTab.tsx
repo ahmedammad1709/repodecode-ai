@@ -10,7 +10,13 @@ const templates = [
   { name: "Monorepo", tags: ["Detailed"], desc: "Multi-package repo with workspace structure." },
 ];
 
-export function TemplatesTab() {
+interface TemplatesTabProps {
+  userId: string;
+  userName: string;
+  userEmail: string;
+}
+
+export function TemplatesTab({ userId }: TemplatesTabProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">

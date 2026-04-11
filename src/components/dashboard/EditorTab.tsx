@@ -33,7 +33,13 @@ PRs are welcome! Please read CONTRIBUTING.md first.
 ## License
 MIT © 2025`;
 
-export function EditorTab() {
+interface EditorTabProps {
+  userId: string;
+  userName: string;
+  userEmail: string;
+}
+
+export function EditorTab({ userId }: EditorTabProps) {
   return (
     <div className="space-y-4 h-full flex flex-col">
       <div className="flex items-center justify-between">
